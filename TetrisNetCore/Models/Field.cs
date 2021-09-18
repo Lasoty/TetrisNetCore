@@ -8,5 +8,9 @@ namespace TetrisNetCore.Models
 {
     public class Field
     {
+        public int RowCount { get; internal set; } = 24;
+        public int ColumnCount { get; internal set; } = 10;
+
+
     }
 }

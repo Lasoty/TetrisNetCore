@@ -33,21 +33,8 @@ namespace TetrisNetCore
             this.Game = new GameViewModel();
             this.InitializeComponent();
 
-            CellViewModel[,] fakeCells = new CellViewModel[5, 5];
-
-            for (int i = 0; i < 5; i++)
-            {
-                for (int j = 0; j < 5; j++)
-                {
-                    fakeCells[i, j] = new CellViewModel()
-                    {
-                        Color = new Reactive.Bindings.ReactiveProperty<Color>(Colors.AliceBlue)
-                    };                    
-                }
-            }
-
-        SetupField(this.field, fakeCells, 30);
-        SetupField(this.nextField, fakeCells, 18);
+        SetupField(this.field, this.Game.Field.Cells, 30);
+        SetupField(this.nextField, this.Game.NextField.Cells, 18);
     }
 
     #endregion

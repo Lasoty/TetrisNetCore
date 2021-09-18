@@ -27,7 +27,7 @@ namespace TetrisNetCore.ViewModels
         {
             this.Result = new GameResultViewModel(this.Game.Result);
             this.Field = new FieldViewModel(this.Game.Field);
-            this.NextField = new NextFieldViewModel();
+            this.NextField = new NextFieldViewModel(this.Game.NextTetrimino);
         }
 
         #endregion
