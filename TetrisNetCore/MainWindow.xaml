@@ -23,7 +23,7 @@
         </Grid.ColumnDefinitions>
 
         <!--  Pole gry  -->
-        <Grid x:Name="field" Grid.ColumnSpan="2" />
+        <Grid x:Name="field" />
 
         <!--  Pola informacyjne  -->
         <Grid Grid.Column="1" Margin="10">
