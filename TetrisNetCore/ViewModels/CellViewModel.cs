@@ -1,9 +1,10 @@
-﻿using System.Windows.Media;
+﻿using Reactive.Bindings;
+using System.Windows.Media;
 
 namespace TetrisNetCore.ViewModels
 {
     public class CellViewModel
     {
-        public Color Color { get; set; }
+        public ReactiveProperty<Color> Color { get; set; }
     }
 }
