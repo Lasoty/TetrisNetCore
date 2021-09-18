@@ -9,11 +9,46 @@
     Width="300"
     Height="300"
     ResizeMode="CanMinimize"
+    SizeToContent="WidthAndHeight"
     WindowStartupLocation="CenterScreen"
     mc:Ignorable="d">
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
     </Window.Resources>
 
-    <Grid />
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <!--  Pole gry  -->
+        <Grid x:Name="field" Grid.ColumnSpan="2" />
+
+        <!--  Pola informacyjne  -->
+        <Grid Grid.Column="1" Margin="10">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <Grid
+                x:Name="nextField"
+                HorizontalAlignment="Center"
+                DataContext="{Binding NextField}" />
+
+            <Grid
+                Grid.Row="2"
+                HorizontalAlignment="Center"
+                DataContext="{Binding Result}">
+                <WrapPanel>
+                    <TextBlock FontSize="28" Text="Total: " />
+                    <TextBlock FontSize="28" Text="{TotalRowCount.Value}" />
+                </WrapPanel>
+            </Grid>
+
+        </Grid>
+
+    </Grid>
 </Window>
