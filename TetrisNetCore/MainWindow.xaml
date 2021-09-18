@@ -44,7 +44,7 @@
                 DataContext="{Binding Result}">
                 <WrapPanel>
                     <TextBlock FontSize="28" Text="Total: " />
-                    <TextBlock FontSize="28" Text="{TotalRowCount.Value}" />
+                    <TextBlock FontSize="28" Text="{Binding TotalRowCount.Value}" />
                 </WrapPanel>
             </Grid>
 
