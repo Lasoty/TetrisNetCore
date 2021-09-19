@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media;
+using TetrisNetCore.Utilities;
 
 namespace TetrisNetCore.Models
 {
@@ -66,6 +67,17 @@ namespace TetrisNetCore.Models
             int row = -length;
             int column = (Field.ColumnCount - length) / 2;
             return new Position(row, column);
+        }
+
+        internal static Tetrimino Create(TetriminoKind? kind)
+        {
+            kind = kind ?? RandomKind();
+            return new Tetrimino(kind.Value);
+        }
+
+        private static TetriminoKind RandomKind()
+        {
+            return (TetriminoKind)RandomProvider.ThreadRandom.Next(6);
         }
 
         private List<Block> CreateBlocks(Position position, Direction direction = Direction.Up)
@@ -373,7 +385,9 @@ namespace TetrisNetCore.Models
             List<Block> blocks = CreateBlocks(position);
 
             if (blocks.Any(checkCollision))
+            {
                 return false;
+            }
 
             this.Position = position;
             this.Blocks = blocks;
