@@ -1,4 +1,7 @@
-﻿using System.Windows.Media;
+﻿using System;
+using System.Linq;
+using System.Reactive.Linq;
+using System.Windows.Media;
 using TetrisNetCore.Extensions;
 using TetrisNetCore.Models;
 
@@ -29,18 +32,31 @@ namespace TetrisNetCore.ViewModels
                 this.Cells[item.X, item.Y] = new CellViewModel();
             }
 
-            //TODO: Obsługa zmian związanych z blokami
+            this.Field.Tetrimino.CombineLatest
+                (
+                this.Field.PlacedBlocks,
+                (t, p) => (t == null ? p : p.Concat(t.Blocks))
+                .ToDictionary2(x => x.Position.Row, x => x.Position.Column)
+                )
+                .Subscribe(x => {
+
+                    foreach (var item in Cells.WithIndex())
+                    {
+                        Color color = x.GetValueOrDefault(item.X)?.GetValueOrDefault(item.Y)
+                                      ?.Color ?? this.BackgroundColor;
+
+                        item.Element.Color.Value = color;
+                    }
+                });
         }
 
         #endregion
 
         #region Metody
 
-        //TODO: Obsługa ruchu
+        public void MoveTetrimino(MoveDirection direction) => Field.MoveTetrimino(direction);
 
-        //TODO: Obsługa rotacji
-
-
+        public void RotationTetrimino(RotationDirection direction) => Field.RotationTetrimino(direction);
 
         #endregion
 

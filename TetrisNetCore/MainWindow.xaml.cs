@@ -35,6 +35,8 @@ namespace TetrisNetCore
 
             SetupField(this.field, this.Game.Field.Cells, 30);
             SetupField(this.nextField, this.Game.NextField.Cells, 18);
+            AttachEvents();
+            Game.Play();
         }
 
         #endregion
@@ -74,6 +76,27 @@ namespace TetrisNetCore
                 Grid.SetRow(control, item.X);
                 Grid.SetColumn(control, item.Y);
                 field.Children.Add(control);
+            }
+        }
+
+        private void AttachEvents()
+        {
+            this.KeyDown += MainWindow_KeyDown;
+        }
+
+        private void MainWindow_KeyDown(object sender, KeyEventArgs e)
+        {
+            switch (e.Key)
+            {
+                case Key.Up: this.Game.Field.RotationTetrimino(Models.RotationDirection.Right); break;
+                case Key.Z: this.Game.Field.RotationTetrimino(Models.RotationDirection.Left); break;
+                case Key.X: this.Game.Field.RotationTetrimino(Models.RotationDirection.Right); break;
+                
+                case Key.Right: this.Game.Field.MoveTetrimino(Models.MoveDirection.Right); break;
+                case Key.Left: this.Game.Field.MoveTetrimino(Models.MoveDirection.Left); break;
+                case Key.Down: this.Game.Field.MoveTetrimino(Models.MoveDirection.Down); break;
+                
+                case Key.Escape: this.Game.Play(); break;
             }
         }
 

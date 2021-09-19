@@ -27,9 +27,9 @@ namespace TetrisNetCore.Models
         public ReactiveProperty<bool> IsUpperLimitOvered { get; set; } 
             = new ReactiveProperty<bool>(mode: ReactivePropertyMode.DistinctUntilChanged);
 
-        public ReactiveProperty<int> LastRemovedRowCount { get; set; }
+        public ReactiveProperty<int> LastRemovedRowCount { get; set; } = new ReactiveProperty<int>();
 
-        private Timer Timer { get; set; }
+        private Timer Timer { get; set; } = new Timer();
 
         #endregion
 
@@ -60,6 +60,10 @@ namespace TetrisNetCore.Models
             this.PlacedBlocks.Value = new List<Block>();
             Timer.Interval = 1000; // 1s
             Timer.Start();
+        }
+
+        public void RotationTetrimino(RotationDirection direction)
+        {
         }
 
         public void MoveTetrimino(MoveDirection direction)

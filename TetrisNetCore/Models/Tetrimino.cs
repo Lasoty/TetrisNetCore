@@ -17,7 +17,7 @@ namespace TetrisNetCore.Models
         /// </summary>
         public TetriminoKind Kind { get; set; }
 
-        public Color Color { get; set; }
+        public Color Color => GetKindBlockColor(Kind);
 
         public Position Position { get; set; }
 
@@ -75,7 +75,7 @@ namespace TetrisNetCore.Models
             return new Tetrimino(kind.Value);
         }
 
-        private static TetriminoKind RandomKind()
+        public static TetriminoKind RandomKind()
         {
             return (TetriminoKind)RandomProvider.ThreadRandom.Next(6);
         }
@@ -392,6 +392,21 @@ namespace TetrisNetCore.Models
             this.Position = position;
             this.Blocks = blocks;
             return true;
+        }
+
+        public Color GetKindBlockColor(TetriminoKind kind)
+        {
+            switch (kind)
+            {
+                case TetriminoKind.I: return Colors.LightBlue;
+                case TetriminoKind.O: return Colors.Yellow;
+                case TetriminoKind.S: return Colors.YellowGreen;
+                case TetriminoKind.Z: return Colors.Red;
+                case TetriminoKind.J: return Colors.Blue;
+                case TetriminoKind.L: return Colors.Orange;
+                case TetriminoKind.T: return Colors.Purple;
+            }
+            throw new InvalidOperationException("Unknown Tetrimino");
         }
 
         public bool Rotation(RotationDirection rotationDirection, Func<Block, bool> checkCollision)
