@@ -1,39 +1,86 @@
 ﻿using Reactive.Bindings;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace TetrisNetCore.Models
 {
+    /// <summary>
+    /// Reprezentuje samą grę.
+    /// </summary>
     public class Game
     {
-        public GameResult Result { get; internal set; } = new GameResult();
-        public Field Field { get; internal set; } = new Field();
-        public ReactiveProperty<TetriminoKind> NextTetrimino { get; set; } = new ReactiveProperty<TetriminoKind>();
-        public ReactiveProperty<bool> IsPlaying => this.Field.IsActivated.ToReactiveProperty();
+        #region Właściwości
+        /// <summary>
+        /// Wynik gry
+        /// </summary>
+        public GameResult Result { get; } = new GameResult();
 
+        /// <summary>
+        /// Pole
+        /// </summary>
+        public Field Field { get; } = new Field();
+
+        /// <summary>
+        /// Czy gra w toku
+        /// </summary>
+        public IReadOnlyReactiveProperty<bool> IsPlaying => this.Field.IsActivated.ToReadOnlyReactiveProperty();
+
+        /// <summary>
+        /// Pobiera informację, czy gra się skończyła.
+        /// </summary>
+        public IReadOnlyReactiveProperty<bool> IsOver => this.Field.IsUpperLimitOvered.ToReadOnlyReactiveProperty();
+
+        /// <summary>
+        /// Pobiera tetrimino, które pojawi się jako następne.
+        /// </summary>
+        public IReadOnlyReactiveProperty<TetriminoKind> NextTetrimino => this.nextTetrimino;
+        private readonly ReactiveProperty<TetriminoKind> nextTetrimino = new ReactiveProperty<TetriminoKind>();
+
+        /// <summary>
+        /// Pobiera lub ustawia liczbę poprzednich przyspieszeń.
+        /// </summary>
+        private int PreviousCount { get; set; }
+        #endregion
+
+        #region Konstruktor
+        /// <summary>
+        /// Tworzy instancję gry
+        /// </summary>
         public Game()
         {
-            this.Field.PlacedBlocks.Subscribe(_ => {
+            this.Field.PlacedBlocks.Subscribe(_ =>
+            {
+                //--- Przyspiesz za każdym razem, gdy kasujesz 10 linii
+                int count = this.Result.TotalRowCount.Value / 10;
+                if (count > this.PreviousCount)
+                {
+                    this.PreviousCount = count;
+                    this.Field.SpeedUp();
+                }
 
-                TetriminoKind kind = this.NextTetrimino.Value;
-                NextTetrimino.Value = Tetrimino.RandomKind();
-                Field.Tetrimino.Value = Tetrimino.Create(kind);
+                //--- Skonfiguruj nowe tetrimino
+                TetriminoKind kind = this.nextTetrimino.Value;
+                this.nextTetrimino.Value = Tetrimino.RandomKind();
+                this.Field.Tetrimino.Value = Tetrimino.Create(kind);
             });
-
-            Field.LastRemovedRowCount.Subscribe(x => Result.TotalRowCount.Value += x);
+            this.Field.LastRemovedRowCount.Subscribe(this.Result.AddRowCount);
         }
+        #endregion
 
-        internal void Play()
+        #region Metody
+        /// <summary>
+        /// Rozpocznij grę
+        /// </summary>
+        public void Play()
         {
-            if (IsPlaying.Value)
+            if (this.IsPlaying.Value)
                 return;
 
-            NextTetrimino.Value = Tetrimino.RandomKind();
-            Field.Activate(Tetrimino.RandomKind());
-            Result.TotalRowCount.Value = 0;
+            this.PreviousCount = 0;
+            this.nextTetrimino.Value = Tetrimino.RandomKind();
+            this.Field.Activate(Tetrimino.RandomKind());
+            this.Result.Clear();
         }
+        #endregion
     }
+
 }

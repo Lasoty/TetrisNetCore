@@ -22,10 +22,10 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <!--  Pole gry  -->
+        <!--  pole  -->
         <Grid x:Name="field" />
 
-        <!--  Pola informacyjne  -->
+        <!--  Informacja  -->
         <Grid Grid.Column="1" Margin="10">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
@@ -33,22 +33,140 @@
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
 
+            <!--  Pola na następne tetrimino  -->
             <Grid
                 x:Name="nextField"
                 HorizontalAlignment="Center"
                 DataContext="{Binding NextField}" />
 
+            <!--  Wynik  -->
             <Grid
                 Grid.Row="2"
                 HorizontalAlignment="Center"
                 DataContext="{Binding Result}">
-                <WrapPanel>
-                    <TextBlock FontSize="28" Text="Total: " />
-                    <TextBlock FontSize="28" Text="{Binding TotalRowCount.Value}" />
-                </WrapPanel>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <TextBlock
+                    Grid.Row="0"
+                    Grid.Column="0"
+                    FontSize="28"
+                    Text="Total" />
+                <TextBlock
+                    Grid.Row="1"
+                    Grid.Column="0"
+                    FontSize="16"
+                    Text="4 rows" />
+                <TextBlock
+                    Grid.Row="2"
+                    Grid.Column="0"
+                    FontSize="16"
+                    Text="3 rows" />
+                <TextBlock
+                    Grid.Row="3"
+                    Grid.Column="0"
+                    FontSize="16"
+                    Text="2 rows" />
+                <TextBlock
+                    Grid.Row="4"
+                    Grid.Column="0"
+                    FontSize="16"
+                    Text="1 row" />
+                <TextBlock
+                    Grid.Row="0"
+                    Grid.Column="1"
+                    FontSize="28"
+                    Text=" : "
+                    TextAlignment="Center" />
+                <TextBlock
+                    Grid.Row="1"
+                    Grid.Column="1"
+                    FontSize="16"
+                    Text=" : "
+                    TextAlignment="Center" />
+                <TextBlock
+                    Grid.Row="2"
+                    Grid.Column="1"
+                    FontSize="16"
+                    Text=" : "
+                    TextAlignment="Center" />
+                <TextBlock
+                    Grid.Row="3"
+                    Grid.Column="1"
+                    FontSize="16"
+                    Text=" : "
+                    TextAlignment="Center" />
+                <TextBlock
+                    Grid.Row="4"
+                    Grid.Column="1"
+                    FontSize="16"
+                    Text=" : "
+                    TextAlignment="Center" />
+                <TextBlock
+                    Grid.Row="0"
+                    Grid.Column="2"
+                    FontSize="28"
+                    Text="{Binding TotalRowCount.Value}"
+                    TextAlignment="Right" />
+                <TextBlock
+                    Grid.Row="1"
+                    Grid.Column="2"
+                    FontSize="16"
+                    Text="{Binding RowCount4.Value}"
+                    TextAlignment="Right" />
+                <TextBlock
+                    Grid.Row="2"
+                    Grid.Column="2"
+                    FontSize="16"
+                    Text="{Binding RowCount3.Value}"
+                    TextAlignment="Right" />
+                <TextBlock
+                    Grid.Row="3"
+                    Grid.Column="2"
+                    FontSize="16"
+                    Text="{Binding RowCount2.Value}"
+                    TextAlignment="Right" />
+                <TextBlock
+                    Grid.Row="4"
+                    Grid.Column="2"
+                    FontSize="16"
+                    Text="{Binding RowCount1.Value}"
+                    TextAlignment="Right" />
             </Grid>
-
         </Grid>
 
+        <!--  koniec gry  -->
+        <Grid
+            Grid.ColumnSpan="2"
+            Background="#99000000"
+            Visibility="{Binding IsOver.Value, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <TextBlock
+                Grid.Row="1"
+                FontSize="48"
+                Foreground="#FFFFA0A0"
+                Text="Game is over!"
+                TextAlignment="Center" />
+            <TextBlock
+                Grid.Row="2"
+                FontSize="24"
+                Foreground="#FFFFA0A0"
+                Text="Please press Esc key"
+                TextAlignment="Center" />
+        </Grid>
     </Grid>
 </Window>
